@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>com.io7m.quixote</artifactId>
+    <groupId>com.io7m.quixote</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>com.io7m.quixote.core</artifactId>
+
+  <name>com.io7m.quixote.core</name>
+  <description>Embedded test suite web server (Core)</description>
+  <url>https://www.io7m.com/software/quixote</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.nanohttpd</groupId>
+      <artifactId>nanohttpd</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.annotation.bundle</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.annotation.versioning</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Write a custom manifest that excludes bnd. -->
+      <plugin>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-maven-plugin</artifactId>
+        <configuration>
+          <bnd>
+            <![CDATA[
+Automatic-Module-Name:    $[project.artifactId]
+Built-By:                 $[io7m.jar.built_by]
+Bundle-Description:       $[project.description]
+Bundle-DocURL:            $[project.distributionManagement.site.url]
+Bundle-Name:              $[project.artifactId] $[project.version] - $[project.description]
+Bundle-SCM:               $[project.scm.url]
+Bundle-Vendor:            $[io7m.jar.vendor]
+Implementation-Build:     $[buildNumber]
+Implementation-Title:     $[project.name]
+Implementation-Vendor:    $[io7m.jar.vendor]
+Implementation-Vendor-Id: $[project.groupId]
+Implementation-Version:   $[project.version]
+Sealed:                   true
+Specification-Title:      $[project.name]
+Specification-Vendor:     $[io7m.jar.vendor]
+Specification-Version:    $[project.version]
+
+-noextraheaders: true
+-snapshot:       SNAPSHOT
+-removeheaders:  Bnd-LastModified, Tool, Private-Package, Build-Jdk-Spec
+
+Import-Package: \
+  !fi.iki.elonen.*, \
+  *
+]]></bnd>
+        </configuration>
+        <executions>
+          <execution>
+            <id>generate-osgi-manifest</id>
+            <goals>
+              <goal>bnd-process</goal>
+            </goals>
+            <phase>process-classes</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Produce a shaded jar file that hides bnd from the rest of the world. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>shade</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <relocations>
+                <relocation>
+                  <pattern>fi.iki.elonen</pattern>
+                  <shadedPattern>com.io7m.quixote.fi.iki.elonen</shadedPattern>
+                </relocation>
+              </relocations>
+              <artifactSet/>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>LICENSE.txt</exclude>
+                    <exclude>LICENSE</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/maven/org.nanohttp/**</exclude>
+                    <exclude>NOTICE</exclude>
+                    <exclude>OSGI-OPT/**</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Inject a custom module descriptor that does not include bnd. -->
+      <plugin>
+        <groupId>org.moditect</groupId>
+        <artifactId>moditect-maven-plugin</artifactId>
+        <version>1.0.0.RC2</version>
+        <executions>
+          <execution>
+            <id>add-module-infos</id>
+            <phase>package</phase>
+            <goals>
+              <goal>add-module-info</goal>
+            </goals>
+            <configuration>
+              <overwriteExistingFiles>true</overwriteExistingFiles>
+              <module>
+                <moduleInfoFile>src/main/java-descriptor/module-info.java</moduleInfoFile>
+              </module>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Make the jar reproducible. -->
+      <plugin>
+        <groupId>io.github.zlika</groupId>
+        <artifactId>reproducible-build-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
