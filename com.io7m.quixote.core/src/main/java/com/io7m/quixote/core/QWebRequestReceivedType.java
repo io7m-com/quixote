@@ -42,4 +42,10 @@ public interface QWebRequestReceivedType
    */
 
   Map<String, String> headers();
+
+  /**
+   * @return The parsed request files, if any
+   */
+
+  Map<String, String> files();
 }

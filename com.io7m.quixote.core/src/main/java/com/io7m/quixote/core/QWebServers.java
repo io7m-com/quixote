@@ -29,6 +29,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static fi.iki.elonen.NanoHTTPD.Response.Status.SERVICE_UNAVAILABLE;
+import static fi.iki.elonen.NanoHTTPD.newFixedLengthResponse;
 import static java.util.Locale.ROOT;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 
@@ -75,7 +76,8 @@ public final class QWebServers implements QWebServerFactoryType
   private record QWebRequestReceived(
     String method,
     String path,
-    Map<String, String> headers)
+    Map<String, String> headers,
+    Map<String, String> files)
     implements QWebRequestReceivedType
   {
     private QWebRequestReceived
@@ -83,6 +85,7 @@ public final class QWebServers implements QWebServerFactoryType
       Objects.requireNonNull(method, "method");
       Objects.requireNonNull(path, "path");
       Objects.requireNonNull(headers, "headers");
+      Objects.requireNonNull(files, "files");
     }
   }
 
@@ -120,13 +123,29 @@ public final class QWebServers implements QWebServerFactoryType
     public Response serve(
       final IHTTPSession session)
     {
-      this.requests.add(
+      final var requestReceived =
         new QWebRequestReceived(
           session.getMethod().name(),
           session.getUri(),
-          Map.copyOf(session.getHeaders())
-        )
-      );
+          Map.copyOf(session.getHeaders()),
+          new HashMap<>()
+        );
+
+      this.requests.add(requestReceived);
+
+      try {
+        session.parseBody(requestReceived.files);
+      } catch (final Exception e) {
+        return newFixedLengthResponse(
+          SERVICE_UNAVAILABLE,
+          "text/plain",
+          String.format(
+            "Failed response for method %s and path '%s': %s",
+            session.getMethod(),
+            session.getUri(),
+            e)
+        );
+      }
 
       final var iterator =
         this.responses.iterator();
@@ -206,6 +225,16 @@ public final class QWebServers implements QWebServerFactoryType
     private InputStream responseData;
     private String contentType;
     private long contentLength;
+
+    @Override
+    public String toString()
+    {
+      return String.format(
+        "[Response [Method %s] [Path %s]]",
+        this.patternMethod,
+        this.patternPath
+      );
+    }
 
     private QMutableResponse()
     {
@@ -291,14 +320,18 @@ public final class QWebServers implements QWebServerFactoryType
       final var pathText =
         session.getUri();
 
-      return this.patternMethod.matcher(methodText).matches()
-             && this.patternPath.matcher(pathText).matches();
+      final var methodMatches =
+        this.patternMethod.matcher(methodText).matches();
+      final var pathMatches =
+        this.patternPath.matcher(pathText).matches();
+
+      return methodMatches && pathMatches;
     }
 
     public NanoHTTPD.Response httpResponse()
     {
       final var response =
-        NanoHTTPD.newFixedLengthResponse(
+        newFixedLengthResponse(
           NanoHTTPD.Response.Status.lookup(this.responseCode),
           this.contentType,
           this.responseData,
