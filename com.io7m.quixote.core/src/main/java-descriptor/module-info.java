@@ -23,5 +23,7 @@ module com.io7m.quixote.core
   requires static org.osgi.annotation.bundle;
   requires static org.osgi.annotation.versioning;
 
+  requires java.logging;
+
   exports com.io7m.quixote.core;
 }
