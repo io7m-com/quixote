@@ -13,7 +13,7 @@
 
   <groupId>com.io7m.quixote</groupId>
   <artifactId>com.io7m.quixote</artifactId>
-  <version>0.0.2</version>
+  <version>1.0.0</version>
 
   <packaging>pom</packaging>
   <name>com.io7m.quixote</name>
@@ -26,22 +26,15 @@
   </modules>
 
   <properties>
-    <com.io7m.anethum.version>0.0.2</com.io7m.anethum.version>
-    <com.io7m.cedarbridge.version>0.0.11</com.io7m.cedarbridge.version>
-    <com.io7m.jbssio.version>1.1.1</com.io7m.jbssio.version>
-    <com.io7m.jxtrand.version>1.1.0</com.io7m.jxtrand.version>
-    <com.io7m.trasco.version>0.0.6</com.io7m.trasco.version>
-    <com.io7m.verona.version>0.0.3</com.io7m.verona.version>
     <com.io7m.xstructural.version>1.8.0</com.io7m.xstructural.version>
-    <io7m.api.previousVersion>0.0.1-SNAPSHOT</io7m.api.previousVersion>
-    <io7m.maven-api.version>3.8.6</io7m.maven-api.version>
+    <io7m.api.previousVersion>1.0.0</io7m.api.previousVersion>
     <jooq.version>3.17.5</jooq.version>
-    <junit.version>5.9.1</junit.version>
+    <junit.version>5.9.3</junit.version>
   </properties>
 
   <licenses>
     <license>
-      <name>ISC License</name>
+      <name>ISC</name>
       <url>https://www.io7m.com/license/isc.txt</url>
     </license>
   </licenses>
@@ -96,12 +89,12 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.4.5</version>
+        <version>1.4.7</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>2.0.6</version>
+        <version>2.0.7</version>
       </dependency>
       <dependency>
         <groupId>org.osgi</groupId>
@@ -131,7 +124,7 @@
       <dependency>
         <groupId>com.io7m.primogenitor</groupId>
         <artifactId>com.io7m.primogenitor.support</artifactId>
-        <version>7.5.0</version>
+        <version>7.7.0</version>
       </dependency>
       <dependency>
         <groupId>org.nanohttpd</groupId>
