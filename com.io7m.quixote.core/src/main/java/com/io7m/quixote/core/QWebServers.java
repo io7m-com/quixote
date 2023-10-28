@@ -49,7 +49,7 @@ public final class QWebServers implements QWebServerFactoryType
   }
 
   /**
-   * Create a new web server that listens on the given port.
+   * Create a new web server that listens on the given port on localhost.
    *
    * @param port The port
    *
@@ -65,12 +65,38 @@ public final class QWebServers implements QWebServerFactoryType
     return new QWebServers().create(port);
   }
 
+  /**
+   * Create a new web server that listens on the given port on all available
+   * addresses.
+   *
+   * @param port The port
+   *
+   * @return A new web server
+   *
+   * @throws IOException On errors
+   */
+
+  public static QWebServerType createServerForAll(
+    final int port)
+    throws IOException
+  {
+    return new QWebServers().createForAll(port);
+  }
+
   @Override
   public QWebServerType create(
     final int port)
     throws IOException
   {
-    return new QWebServer(port);
+    return new QWebServer("localhost", port);
+  }
+
+  @Override
+  public QWebServerType createForAll(
+    final int port)
+    throws IOException
+  {
+    return new QWebServer("[::]", port);
   }
 
   private record QWebRequestReceived(
@@ -98,10 +124,14 @@ public final class QWebServers implements QWebServerFactoryType
     private boolean gzipEnabled;
 
     QWebServer(
+      final String hostName,
       final int port)
       throws IOException
     {
-      super("localhost", port);
+      super(
+        Objects.requireNonNull(hostName, "hostName"),
+        port
+      );
 
       this.responses =
         new LinkedList<>();
