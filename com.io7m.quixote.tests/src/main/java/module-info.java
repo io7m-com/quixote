@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022 Mark Raynsford <code@io7m.com> https://www.io7m.com
+ * Copyright © 2023 Mark Raynsford <code@io7m.com> https://www.io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -15,12 +15,18 @@
  */
 
 /**
- * Embedded test suite web server (Core)
+ * Embedded test suite web server (Test suite)
  */
 
-@Export
-@Version("1.1.0")
-package com.io7m.quixote.core;
+open module com.io7m.quixote.tests
+{
+  requires org.junit.jupiter.api;
+  requires org.junit.jupiter.engine;
+  requires org.junit.platform.commons;
+  requires org.junit.platform.engine;
 
-import org.osgi.annotation.bundle.Export;
-import org.osgi.annotation.versioning.Version;
+  requires com.io7m.quixote.core;
+  requires java.net.http;
+
+  exports com.io7m.quixote.tests;
+}

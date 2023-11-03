@@ -16,6 +16,8 @@
 
 package com.io7m.quixote.core;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 import java.io.Closeable;
 import java.net.URI;
 import java.util.List;
@@ -24,6 +26,7 @@ import java.util.List;
  * A web server.
  */
 
+@ProviderType
 public interface QWebServerType extends Closeable
 {
   /**

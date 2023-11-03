@@ -8,12 +8,12 @@
   <parent>
     <groupId>com.io7m.primogenitor</groupId>
     <artifactId>com.io7m.primogenitor.full</artifactId>
-    <version>7.5.0</version>
+    <version>8.0.0</version>
   </parent>
 
   <groupId>com.io7m.quixote</groupId>
   <artifactId>com.io7m.quixote</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 
   <packaging>pom</packaging>
   <name>com.io7m.quixote</name>
@@ -89,7 +89,7 @@
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.4.7</version>
+        <version>1.4.8</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -124,7 +124,7 @@
       <dependency>
         <groupId>com.io7m.primogenitor</groupId>
         <artifactId>com.io7m.primogenitor.support</artifactId>
-        <version>7.7.0</version>
+        <version>8.0.0</version>
       </dependency>
       <dependency>
         <groupId>org.nanohttpd</groupId>

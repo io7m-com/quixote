@@ -16,6 +16,7 @@
 
 package com.io7m.quixote.tests;
 
+import com.io7m.quixote.core.QWebServerAddresses;
 import com.io7m.quixote.core.QWebServerType;
 import com.io7m.quixote.core.QWebServers;
 import org.junit.jupiter.api.AfterEach;
@@ -30,7 +31,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
 import static java.net.http.HttpResponse.BodyHandlers.ofByteArray;
@@ -84,6 +84,264 @@ public final class QWebServersTest
     throws Exception
   {
     /* Arrange */
+
+    this.server.addResponse()
+      .forMethod("GET")
+      .forPath("/xyz")
+      .withContentType("text/plain")
+      .withFixedText("Hello 0.")
+      .withStatus(201)
+      .withHeader("Header-0", "XYZ");
+
+    this.server.addResponse()
+      .forMethod("GET")
+      .forPath("/xyz")
+      .withContentType("text/plain")
+      .withFixedText("Hello 1.")
+      .withStatus(201)
+      .withHeader("Header-1", "ABC");
+
+    assertEquals(2, this.server.responses().size());
+
+    assertEquals(
+      List.of(
+        "[Response [Method GET] [Path ^/xyz]]",
+        "[Response [Method GET] [Path ^/xyz]]"
+      ),
+      this.server.responses()
+        .stream()
+        .map(Object::toString)
+        .toList()
+    );
+
+    /* Act */
+
+    final var request =
+      HttpRequest.newBuilder(this.server.uri().resolve("xyz"))
+        .build();
+
+    final var response0 =
+      this.http.send(request, ofString());
+
+    final var response1 =
+      this.http.send(request, ofString());
+
+    final var response2 =
+      this.http.send(request, ofString());
+
+    /* Assert */
+
+    final var requests =
+      new LinkedList<>(this.server.requestsReceived());
+
+    assertEquals(201, response0.statusCode());
+    assertEquals(
+      "Hello 0.",
+      response0.body()
+    );
+    assertEquals(
+      "text/plain",
+      response0.headers()
+        .firstValue("Content-Type")
+        .orElseThrow()
+    );
+    assertEquals(
+      "XYZ",
+      response0.headers()
+        .firstValue("Header-0")
+        .orElseThrow()
+    );
+
+    {
+      final var req = requests.remove(0);
+      assertEquals("GET", req.method());
+      assertEquals("/xyz", req.path());
+    }
+
+    assertEquals(201, response1.statusCode());
+    assertEquals(
+      "Hello 1.",
+      response1.body()
+    );
+    assertEquals(
+      "ABC",
+      response1.headers()
+        .firstValue("Header-1")
+        .orElseThrow()
+    );
+    assertEquals(
+      "text/plain",
+      response1.headers()
+        .firstValue("Content-Type")
+        .orElseThrow()
+    );
+
+    {
+      final var req = requests.remove(0);
+      assertEquals("GET", req.method());
+      assertEquals("/xyz", req.path());
+    }
+
+    assertEquals(503, response2.statusCode());
+    assertEquals(
+      "No matching responses for method GET and path '/xyz'.",
+      response2.body()
+    );
+
+    {
+      final var req = requests.remove(0);
+      assertEquals("GET", req.method());
+      assertEquals("/xyz", req.path());
+    }
+
+    assertEquals(0, requests.size());
+  }
+
+  /**
+   * Test a series of GET requests.
+   *
+   * @throws Exception On errors
+   */
+
+  @Test
+  public void testGET_1()
+    throws Exception
+  {
+    /* Arrange */
+
+    this.server.close();
+    this.server = QWebServers.createServerForAll(42000);
+
+    this.server.addResponse()
+      .forMethod("GET")
+      .forPath("/xyz")
+      .withContentType("text/plain")
+      .withFixedText("Hello 0.")
+      .withStatus(201)
+      .withHeader("Header-0", "XYZ");
+
+    this.server.addResponse()
+      .forMethod("GET")
+      .forPath("/xyz")
+      .withContentType("text/plain")
+      .withFixedText("Hello 1.")
+      .withStatus(201)
+      .withHeader("Header-1", "ABC");
+
+    assertEquals(2, this.server.responses().size());
+
+    assertEquals(
+      List.of(
+        "[Response [Method GET] [Path ^/xyz]]",
+        "[Response [Method GET] [Path ^/xyz]]"
+      ),
+      this.server.responses()
+        .stream()
+        .map(Object::toString)
+        .toList()
+    );
+
+    /* Act */
+
+    final var request =
+      HttpRequest.newBuilder(this.server.uri().resolve("xyz"))
+        .build();
+
+    final var response0 =
+      this.http.send(request, ofString());
+
+    final var response1 =
+      this.http.send(request, ofString());
+
+    final var response2 =
+      this.http.send(request, ofString());
+
+    /* Assert */
+
+    final var requests =
+      new LinkedList<>(this.server.requestsReceived());
+
+    assertEquals(201, response0.statusCode());
+    assertEquals(
+      "Hello 0.",
+      response0.body()
+    );
+    assertEquals(
+      "text/plain",
+      response0.headers()
+        .firstValue("Content-Type")
+        .orElseThrow()
+    );
+    assertEquals(
+      "XYZ",
+      response0.headers()
+        .firstValue("Header-0")
+        .orElseThrow()
+    );
+
+    {
+      final var req = requests.remove(0);
+      assertEquals("GET", req.method());
+      assertEquals("/xyz", req.path());
+    }
+
+    assertEquals(201, response1.statusCode());
+    assertEquals(
+      "Hello 1.",
+      response1.body()
+    );
+    assertEquals(
+      "ABC",
+      response1.headers()
+        .firstValue("Header-1")
+        .orElseThrow()
+    );
+    assertEquals(
+      "text/plain",
+      response1.headers()
+        .firstValue("Content-Type")
+        .orElseThrow()
+    );
+
+    {
+      final var req = requests.remove(0);
+      assertEquals("GET", req.method());
+      assertEquals("/xyz", req.path());
+    }
+
+    assertEquals(503, response2.statusCode());
+    assertEquals(
+      "No matching responses for method GET and path '/xyz'.",
+      response2.body()
+    );
+
+    {
+      final var req = requests.remove(0);
+      assertEquals("GET", req.method());
+      assertEquals("/xyz", req.path());
+    }
+
+    assertEquals(0, requests.size());
+  }
+
+  /**
+   * Test a series of GET requests.
+   *
+   * @throws Exception On errors
+   */
+
+  @Test
+  public void testGET_2()
+    throws Exception
+  {
+    /* Arrange */
+
+    this.server.close();
+    this.server = QWebServers.createServerForSpecific(
+      QWebServerAddresses.findPublicIP()
+        .orElseThrow(),
+      42000
+    );
 
     this.server.addResponse()
       .forMethod("GET")
