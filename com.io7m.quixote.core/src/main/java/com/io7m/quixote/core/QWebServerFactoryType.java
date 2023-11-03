@@ -20,6 +20,7 @@ package com.io7m.quixote.core;
 import org.osgi.annotation.versioning.ProviderType;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 /**
  * A factory of web servers.
@@ -54,5 +55,23 @@ public interface QWebServerFactoryType
    */
 
   QWebServerType createForAll(int port)
+    throws IOException;
+
+  /**
+   * Create a new web server that listens on the given port on the given
+   * address.
+   *
+   * @param address The address
+   * @param port The port
+   *
+   * @return A new web server
+   *
+   * @throws IOException On errors
+   * @since 1.1.0
+   */
+
+  QWebServerType createForSpecific(
+    InetAddress address,
+    int port)
     throws IOException;
 }
