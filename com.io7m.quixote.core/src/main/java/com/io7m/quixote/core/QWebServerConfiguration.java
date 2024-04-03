@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022 Mark Raynsford <code@io7m.com> https://www.io7m.com
+ * Copyright © 2024 Mark Raynsford <code@io7m.com> https://www.io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,13 +14,34 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-/**
- * Embedded test suite web server (Core)
- */
 
-@Export
-@Version("1.2.0")
 package com.io7m.quixote.core;
 
-import org.osgi.annotation.bundle.Export;
-import org.osgi.annotation.versioning.Version;
+import java.util.Objects;
+
+/**
+ * The web server configuration.
+ *
+ * @param hostName   The hostname to which to bind the server
+ * @param port       The port to which to bind the server
+ * @param enableGZIP Enable/disable GZIP
+ */
+
+public record QWebServerConfiguration(
+  String hostName,
+  int port,
+  boolean enableGZIP)
+{
+  /**
+   * The web server configuration.
+   *
+   * @param hostName   The hostname to which to bind the server
+   * @param port       The port to which to bind the server
+   * @param enableGZIP Enable/disable GZIP
+   */
+
+  public QWebServerConfiguration
+  {
+    Objects.requireNonNull(hostName, "hostName");
+  }
+}

@@ -18,9 +18,13 @@
  * Embedded test suite web server (Core)
  */
 
-@Export
-@Version("1.2.0")
-package com.io7m.quixote.core;
+module com.io7m.quixote.core
+{
+  requires static org.osgi.annotation.bundle;
+  requires static org.osgi.annotation.versioning;
 
-import org.osgi.annotation.bundle.Export;
-import org.osgi.annotation.versioning.Version;
+  requires java.logging;
+  requires nanohttpd;
+
+  exports com.io7m.quixote.core;
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022 Mark Raynsford <code@io7m.com> https://www.io7m.com
+ * Copyright © 2024 Mark Raynsford <code@io7m.com> https://www.io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -15,12 +15,21 @@
  */
 
 /**
- * Embedded test suite web server (Core)
+ * Embedded test suite web server (Main)
  */
 
-@Export
-@Version("1.2.0")
-package com.io7m.quixote.core;
+module com.io7m.quixote.main
+{
+  requires static org.osgi.annotation.bundle;
+  requires static org.osgi.annotation.versioning;
 
-import org.osgi.annotation.bundle.Export;
-import org.osgi.annotation.versioning.Version;
+  requires com.io7m.quixote.core;
+  requires com.io7m.quixote.xml;
+
+  requires com.io7m.anethum.api;
+  requires com.io7m.anethum.slf4j;
+  requires com.io7m.blackthorne.core;
+  requires org.slf4j;
+
+  exports com.io7m.quixote.main;
+}

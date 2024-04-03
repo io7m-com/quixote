@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<assembly
+  xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+
+  <id>distribution</id>
+
+  <baseDirectory>quixote</baseDirectory>
+
+  <formats>
+    <format>dir</format>
+    <format>zip</format>
+  </formats>
+
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>lib</outputDirectory>
+      <useProjectArtifact>true</useProjectArtifact>
+      <useTransitiveDependencies>true</useTransitiveDependencies>
+    </dependencySet>
+  </dependencySets>
+
+  <files>
+    <file>
+      <source>src/main/sh/quixote</source>
+      <outputDirectory>/bin</outputDirectory>
+      <fileMode>0755</fileMode>
+    </file>
+    <file>
+      <source>${project.build.directory}/bom.xml</source>
+      <outputDirectory/>
+      <fileMode>0644</fileMode>
+    </file>
+  </files>
+
+</assembly>

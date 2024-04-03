@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+  Copyright © 2024 Mark Raynsford <code@io7m.com> https://www.io7m.com
+
+  Permission to use, copy, modify, and/or distribute this software for any
+  purpose with or without fee is hereby granted, provided that the above
+  copyright notice and this permission notice appear in all copies.
+
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+  SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+  IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-->
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:q="urn:com.io7m.quixote:configuration:1"
+            targetNamespace="urn:com.io7m.quixote:configuration:1">
+
+  <xsd:element name="ContentUTF8">
+    <xsd:annotation>
+      <xsd:documentation>
+        The content returned with a response.
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:string"/>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="ContentBase64">
+    <xsd:annotation>
+      <xsd:documentation>
+        The content returned with a response.
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:complexType>
+      <xsd:simpleContent>
+        <xsd:extension base="xsd:base64Binary"/>
+      </xsd:simpleContent>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="Header">
+    <xsd:annotation>
+      <xsd:documentation>
+        A header that will be returned by a response.
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:complexType>
+      <xsd:attribute name="Name" use="required" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+            The header name.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+
+      <xsd:attribute name="Value" use="required" type="xsd:string">
+        <xsd:annotation>
+          <xsd:documentation>
+            The header value.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="Headers">
+    <xsd:annotation>
+      <xsd:documentation>
+        The headers that will be returned by a response.
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:complexType>
+      <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="q:Header"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="Response">
+    <xsd:annotation>
+      <xsd:documentation>
+        A response that will be returned.
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="q:Headers" minOccurs="0" maxOccurs="1"/>
+        <xsd:choice minOccurs="0" maxOccurs="1">
+          <xsd:element ref="q:ContentBase64"/>
+          <xsd:element ref="q:ContentUTF8"/>
+        </xsd:choice>
+      </xsd:sequence>
+
+      <xsd:attribute name="Method" type="xsd:string" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>
+            The HTTP method against which to match this response.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+
+      <xsd:attribute name="Path" type="xsd:string" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>
+            The path against which to match this response.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+
+      <xsd:attribute name="Status" type="xsd:integer" use="optional">
+        <xsd:annotation>
+          <xsd:documentation>
+            The status code returned by this response.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="Responses">
+    <xsd:complexType>
+      <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+        <xsd:element ref="q:Response"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="Configuration">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="q:Responses"/>
+      </xsd:sequence>
+
+      <xsd:attribute name="HostName"
+                     type="xsd:string"
+                     use="optional">
+        <xsd:annotation>
+          <xsd:documentation>
+            The hostname to which to bind the server.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+
+      <xsd:attribute name="Port"
+                     type="xsd:unsignedShort"
+                     use="required">
+        <xsd:annotation>
+          <xsd:documentation>
+            The port to which to bind the server.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+
+      <xsd:attribute name="GZIP"
+                     type="xsd:boolean"
+                     default="false"
+                     use="optional">
+        <xsd:annotation>
+          <xsd:documentation>
+            Whether to enable GZIP.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:attribute>
+    </xsd:complexType>
+  </xsd:element>
+
+</xsd:schema>

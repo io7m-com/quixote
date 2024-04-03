@@ -26,6 +26,12 @@ open module com.io7m.quixote.tests
   requires org.junit.platform.engine;
 
   requires com.io7m.quixote.core;
+  requires com.io7m.quixote.xml;
+
+  requires org.mockito;
+  requires com.io7m.anethum.slf4j;
+  requires com.io7m.anethum.api;
+  requires com.io7m.blackthorne.core;
   requires java.net.http;
 
   exports com.io7m.quixote.tests;

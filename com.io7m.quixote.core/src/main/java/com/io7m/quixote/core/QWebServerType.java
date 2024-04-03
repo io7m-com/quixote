@@ -21,6 +21,7 @@ import org.osgi.annotation.versioning.ProviderType;
 import java.io.Closeable;
 import java.net.URI;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * A web server.
@@ -67,4 +68,13 @@ public interface QWebServerType extends Closeable
    */
 
   List<QWebRequestReceivedType> requestsReceived();
+
+  /**
+   * Set the callback that will be evaluated on each request.
+   *
+   * @param onRequest The request receiver
+   */
+
+  void setRequestCallback(
+    Consumer<QWebRequestReceivedType> onRequest);
 }

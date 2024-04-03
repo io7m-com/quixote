@@ -1,0 +1,17 @@
+FROM docker.io/library/eclipse-temurin:${com.io7m.oci.versionTemurin}
+
+ENV PATH="/quixote/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/java/openjdk/bin"
+ENV QUIXOTE_HOME="/quixote"
+
+COPY quixote /quixote
+
+LABEL "org.opencontainers.image.authors"="Mark Raynsford"
+LABEL "org.opencontainers.image.description"="Embedded test suite web server"
+LABEL "org.opencontainers.image.licenses"="ISC"
+LABEL "org.opencontainers.image.source"="https://www.github.com/io7m/quixote"
+LABEL "org.opencontainers.image.title"="Quixote"
+LABEL "org.opencontainers.image.url"="https://www.io7m.com/software/quixote"
+LABEL "org.opencontainers.image.version"="${project.version}"
+LABEL "org.opencontainers.image.revision"="${buildNumber}"
+
+ENTRYPOINT ["/quixote/bin/quixote"]

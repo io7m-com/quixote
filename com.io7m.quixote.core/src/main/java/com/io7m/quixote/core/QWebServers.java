@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import static fi.iki.elonen.NanoHTTPD.Response.Status.SERVICE_UNAVAILABLE;
@@ -103,6 +104,22 @@ public final class QWebServers implements QWebServerFactoryType
     return new QWebServers().createForSpecific(address, port);
   }
 
+  /**
+   * Create a new web server from the given configuration.
+   *
+   * @param configuration The configuration
+   *
+   * @return A new web server
+   *
+   * @throws IOException On errors
+   */
+
+  public static QWebServerType createServerForConfiguration(
+    final QWebConfiguration configuration)
+    throws IOException
+  {
+    return new QWebServers().createForConfiguration(configuration);
+  }
 
   @Override
   public QWebServerType create(
@@ -129,6 +146,36 @@ public final class QWebServers implements QWebServerFactoryType
     return new QWebServer(address.getHostName(), port);
   }
 
+  @Override
+  public QWebServerType createForConfiguration(
+    final QWebConfiguration configuration)
+    throws IOException
+  {
+    final var serverConfiguration =
+      configuration.serverConfiguration();
+
+    final var server =
+      new QWebServer(
+        serverConfiguration.hostName(),
+        serverConfiguration.port()
+      );
+
+    server.enableGzip(serverConfiguration.enableGZIP());
+
+    for (final var rec : configuration.responses()) {
+      final var r = server.addResponse();
+      r.withStatus(rec.statusCode());
+      r.withFixedData(rec.content());
+      r.withContentLength(rec.content().length);
+
+      for (final var entry : rec.headers().entrySet()) {
+        r.withHeader(entry.getKey(), entry.getValue());
+      }
+    }
+
+    return server;
+  }
+
   private record QWebRequestReceived(
     String method,
     String path,
@@ -152,6 +199,7 @@ public final class QWebServers implements QWebServerFactoryType
     private final LinkedList<QMutableResponse> responses;
     private final LinkedList<QWebRequestReceived> requests;
     private boolean gzipEnabled;
+    private Consumer<QWebRequestReceivedType> callback;
 
     QWebServer(
       final String hostName,
@@ -167,6 +215,9 @@ public final class QWebServers implements QWebServerFactoryType
         new LinkedList<>();
       this.requests =
         new LinkedList<>();
+      this.callback =
+        r -> {
+        };
 
       this.baseURI =
         URI.create(
@@ -192,6 +243,12 @@ public final class QWebServers implements QWebServerFactoryType
         );
 
       this.requests.add(requestReceived);
+
+      try {
+        this.callback.accept(requestReceived);
+      } catch (final Exception e) {
+        // Ignored
+      }
 
       try {
         session.parseBody(requestReceived.files);
@@ -273,6 +330,13 @@ public final class QWebServers implements QWebServerFactoryType
     public List<QWebRequestReceivedType> requestsReceived()
     {
       return List.copyOf(this.requests);
+    }
+
+    @Override
+    public void setRequestCallback(
+      final Consumer<QWebRequestReceivedType> onRequest)
+    {
+      this.callback = Objects.requireNonNull(onRequest, "onRequest");
     }
   }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022 Mark Raynsford <code@io7m.com> https://www.io7m.com
+ * Copyright © 2023 Mark Raynsford <code@io7m.com> https://www.io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,13 +14,38 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+
+package com.io7m.quixote.xml.v1;
+
+import com.io7m.blackthorne.core.BTQualifiedName;
+import com.io7m.quixote.xml.QWebSchemas;
+
 /**
- * Embedded test suite web server (Core)
+ * Functions over v1 elements.
  */
 
-@Export
-@Version("1.2.0")
-package com.io7m.quixote.core;
+public final class QWX1
+{
+  private QWX1()
+  {
 
-import org.osgi.annotation.bundle.Export;
-import org.osgi.annotation.versioning.Version;
+  }
+
+  /**
+   * The element with the given name.
+   *
+   * @param localName The local name
+   *
+   * @return The qualified name
+   */
+
+  public static BTQualifiedName element(
+    final String localName)
+  {
+    return BTQualifiedName.of(
+      QWebSchemas.schema1().namespace().toString(),
+      localName
+    );
+  }
+
+}

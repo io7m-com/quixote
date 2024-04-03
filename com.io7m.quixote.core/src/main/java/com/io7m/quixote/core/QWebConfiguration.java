@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022 Mark Raynsford <code@io7m.com> https://www.io7m.com
+ * Copyright © 2024 Mark Raynsford <code@io7m.com> https://www.io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,13 +14,33 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-/**
- * Embedded test suite web server (Core)
- */
 
-@Export
-@Version("1.2.0")
 package com.io7m.quixote.core;
 
-import org.osgi.annotation.bundle.Export;
-import org.osgi.annotation.versioning.Version;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Configuration for a server.
+ *
+ * @param serverConfiguration The server configuration
+ * @param responses           The canned responses
+ */
+
+public record QWebConfiguration(
+  QWebServerConfiguration serverConfiguration,
+  List<QWebResponseRecorded> responses)
+{
+  /**
+   * Configuration for a server.
+   *
+   * @param serverConfiguration The server configuration
+   * @param responses           The canned responses
+   */
+
+  public QWebConfiguration
+  {
+    Objects.requireNonNull(serverConfiguration, "serverConfiguration");
+    responses = List.copyOf(responses);
+  }
+}
