@@ -100,6 +100,8 @@ public void tearDown()
 
 ### OCI
 
+[quay.io/repository/io7mcom/quixote](https://quay.io/repository/io7mcom/quixote)
+
 The `quixote` server is also capable of acting as a standalone web server
 for use in integration tests involving containers. This is primarily useful
 for situations where an integration test starts multiple containers inside
@@ -161,7 +163,7 @@ $ podman run \
   --tty \
   --volume quixote:/quixote/data:rw \
   --publish 20001:20001/tcp \
-  quay.io/io7mcom/quixote:1.2.0-SNAPSHOT \
+  quay.io/io7mcom/quixote:1.2.0 \
   /quixote/data/config.xml \
   /quixote/data/output.bin
 INFO com.io7m.quixote.main.Main: Quixote running at http://localhost:20001/
