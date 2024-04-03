@@ -8,7 +8,7 @@ A tiny embedded HTTP server for unit testing.
   * An embedded HTTP server for simulating external services.
   * Conveniently enqueue responses to arbitrary requests.
   * Verify that requests were received as expected.
-  * Zero dependencies.
+  * Zero dependencies for the core module (optional modules may have dependencies).
   * Written in pure Java 21.
   * [OSGi](https://www.osgi.org/) ready.
   * [JPMS](https://en.wikipedia.org/wiki/Java_Platform_Module_System) ready.
