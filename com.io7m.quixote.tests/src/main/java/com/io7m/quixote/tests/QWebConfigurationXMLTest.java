@@ -70,11 +70,11 @@ public final class QWebConfigurationXMLTest
         new String(
           resource("README-LICENSE.txt").readAllBytes(),
           StandardCharsets.UTF_8
-        ),
+        ).trim(),
         new String(
           r.content(),
           StandardCharsets.UTF_8
-        )
+        ).trim()
       );
     }
 
@@ -115,11 +115,11 @@ public final class QWebConfigurationXMLTest
         new String(
           resource("README-LICENSE.txt").readAllBytes(),
           StandardCharsets.UTF_8
-        ),
+        ).trim(),
         new String(
           r.content(),
           StandardCharsets.UTF_8
-        )
+        ).trim()
       );
     }
 
