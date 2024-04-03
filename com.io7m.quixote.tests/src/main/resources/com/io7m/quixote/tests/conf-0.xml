@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Configuration xmlns="urn:com.io7m.quixote:configuration:1"
+               Port="20001"
+               GZIP="true">
+  <Responses>
+    <Response Method="GET"
+              Path="/"
+              Status="200">
+      <Headers>
+        <Header Name="Content-Type"
+                Value="application/octet-stream"/>
+      </Headers>
+      <ContentBase64>
+        Q29weXJpZ2h0IMKpIDIwMjQgTWFyayBSYXluc2ZvcmQgPGNvZGVAaW83bS5jb20+IGh0dHBzOi8v
+        d3d3LmlvN20uY29tCgpQZXJtaXNzaW9uIHRvIHVzZSwgY29weSwgbW9kaWZ5LCBhbmQvb3IgZGlz
+        dHJpYnV0ZSB0aGlzIHNvZnR3YXJlIGZvciBhbnkKcHVycG9zZSB3aXRoIG9yIHdpdGhvdXQgZmVl
+        IGlzIGhlcmVieSBncmFudGVkLCBwcm92aWRlZCB0aGF0IHRoZSBhYm92ZQpjb3B5cmlnaHQgbm90
+        aWNlIGFuZCB0aGlzIHBlcm1pc3Npb24gbm90aWNlIGFwcGVhciBpbiBhbGwgY29waWVzLgoKVEhF
+        IFNPRlRXQVJFIElTIFBST1ZJREVEICJBUyBJUyIgQU5EIFRIRSBBVVRIT1IgRElTQ0xBSU1TIEFM
+        TCBXQVJSQU5USUVTCldJVEggUkVHQVJEIFRPIFRISVMgU09GVFdBUkUgSU5DTFVESU5HIEFMTCBJ
+        TVBMSUVEIFdBUlJBTlRJRVMgT0YKTUVSQ0hBTlRBQklMSVRZIEFORCBGSVRORVNTLiBJTiBOTyBF
+        VkVOVCBTSEFMTCBUSEUgQVVUSE9SIEJFIExJQUJMRSBGT1IKQU5ZIFNQRUNJQUwsIERJUkVDVCwg
+        SU5ESVJFQ1QsIE9SIENPTlNFUVVFTlRJQUwgREFNQUdFUyBPUiBBTlkgREFNQUdFUwpXSEFUU09F
+        VkVSIFJFU1VMVElORyBGUk9NIExPU1MgT0YgVVNFLCBEQVRBIE9SIFBST0ZJVFMsIFdIRVRIRVIg
+        SU4gQU4KQUNUSU9OIE9GIENPTlRSQUNULCBORUdMSUdFTkNFIE9SIE9USEVSIFRPUlRJT1VTIEFD
+        VElPTiwgQVJJU0lORyBPVVQgT0YKT1IgSU4gQ09OTkVDVElPTiBXSVRIIFRIRSBVU0UgT1IgUEVS
+        Rk9STUFOQ0UgT0YgVEhJUyBTT0ZUV0FSRS4K
+      </ContentBase64>
+    </Response>
+  </Responses>
+</Configuration>

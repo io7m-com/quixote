@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Configuration xmlns="urn:com.io7m.quixote:configuration:1"
+               Port="20001"
+               GZIP="true">
+  <Responses>
+    <Response Method="GET"
+              Path="/"
+              Status="200">
+      <Headers>
+        <Header Name="Content-Type"
+                Value="application/octet-stream"/>
+      </Headers>
+      <Nothing/>
+    </Response>
+  </Responses>
+</Configuration>

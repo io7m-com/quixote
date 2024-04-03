@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>com.io7m.quixote</artifactId>
+    <groupId>com.io7m.quixote</groupId>
+    <version>1.2.0</version>
+  </parent>
+
+  <artifactId>com.io7m.quixote.oci</artifactId>
+
+  <name>com.io7m.quixote.oci</name>
+  <description>Embedded test suite web server (OCI image)</description>
+  <url>https://www.io7m.com/software/quixote</url>
+
+  <properties>
+    <com.io7m.oci.versionAlpine>3.18.2</com.io7m.oci.versionAlpine>
+    <com.io7m.oci.versionTemurin>21_35-jre-alpine</com.io7m.oci.versionTemurin>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>com.io7m.quixote.main</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Ignore dependencies that bytecode analysis gets wrong. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <configuration>
+          <failOnWarning>true</failOnWarning>
+          <ignoredUnusedDeclaredDependencies>
+            <ignoredUnusedDeclaredDependency>com.io7m.quixote:*</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic::*</ignoredUnusedDeclaredDependency>
+          </ignoredUnusedDeclaredDependencies>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>io7m-oci-image</id>
+
+      <dependencies>
+        <dependency>
+          <groupId>${project.groupId}</groupId>
+          <artifactId>com.io7m.quixote.main</artifactId>
+          <version>${project.version}</version>
+          <classifier>distribution</classifier>
+          <type>zip</type>
+        </dependency>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <!-- Unpack distribution into context directory. -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack-sources</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>unpack-dependencies</goal>
+                </goals>
+                <configuration>
+                  <excludes>module-info.java</excludes>
+                  <includeGroupIds>${project.groupId}</includeGroupIds>
+                  <includeArtifactIds>com.io7m.quixote.main</includeArtifactIds>
+                  <type>zip</type>
+                  <classifier>distribution</classifier>
+                  <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
+                  <outputDirectory>${project.build.directory}/oci</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- Copy filtered container file to build directory. -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-containerfile</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <resources>
+                    <resource>
+                      <directory>src/main/resources</directory>
+                      <filtering>true</filtering>
+                    </resource>
+                  </resources>
+                  <outputDirectory>${project.build.directory}/oci</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- OCI image creation and deployment. -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <!-- Build and tag an image with podman. -->
+              <execution>
+                <id>oci-image-create</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>package</phase>
+                <configuration>
+                  <executable>podman</executable>
+                  <arguments>
+                    <argument>build</argument>
+                    <argument>--timestamp</argument>
+                    <argument>1577836800</argument>
+                    <argument>-t</argument>
+                    <argument>quay.io/io7mcom/quixote:${project.version}</argument>
+                    <argument>${project.build.directory}/oci</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+
+              <!-- Run the image as a basic sanity check. -->
+              <execution>
+                <id>oci-image-run-check</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>package</phase>
+                <configuration>
+                  <executable>podman</executable>
+                  <arguments>
+                    <argument>run</argument>
+                    <argument>--rm</argument>
+                    <argument>--read-only</argument>
+                    <argument>quay.io/io7mcom/quixote:${project.version}</argument>
+                    <argument>help</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+
+              <!-- Push with podman. -->
+              <execution>
+                <id>oci-image-push</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>deploy</phase>
+                <configuration>
+                  <executable>podman</executable>
+                  <arguments>
+                    <argument>push</argument>
+                    <argument>quay.io/io7mcom/quixote:${project.version}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

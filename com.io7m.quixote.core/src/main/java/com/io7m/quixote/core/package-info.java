@@ -19,7 +19,7 @@
  */
 
 @Export
-@Version("1.1.0")
+@Version("1.2.0")
 package com.io7m.quixote.core;
 
 import org.osgi.annotation.bundle.Export;

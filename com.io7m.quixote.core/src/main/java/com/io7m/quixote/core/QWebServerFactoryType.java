@@ -62,7 +62,7 @@ public interface QWebServerFactoryType
    * address.
    *
    * @param address The address
-   * @param port The port
+   * @param port    The port
    *
    * @return A new web server
    *
@@ -73,5 +73,20 @@ public interface QWebServerFactoryType
   QWebServerType createForSpecific(
     InetAddress address,
     int port)
+    throws IOException;
+
+  /**
+   * Create a new web server from the given configuration.
+   *
+   * @param configuration The configuration
+   *
+   * @return A new web server
+   *
+   * @throws IOException On errors
+   * @since 1.2.0
+   */
+
+  QWebServerType createForConfiguration(
+    QWebConfiguration configuration)
     throws IOException;
 }
