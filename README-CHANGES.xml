@@ -22,6 +22,6 @@
     </c:release>
   </c:releases>
   <c:ticket-systems>
-    <c:ticket-system default="true" id="com.github.io7m.quixote" url="https://www.github.com/io7m/quixote/issues/"/>
+    <c:ticket-system default="true" id="com.github.io7m.quixote" url="https://www.github.com/io7m-com/quixote/issues/"/>
   </c:ticket-systems>
 </c:changelog>
