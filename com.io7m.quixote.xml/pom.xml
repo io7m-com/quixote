@@ -9,7 +9,7 @@
   <parent>
     <artifactId>com.io7m.quixote</artifactId>
     <groupId>com.io7m.quixote</groupId>
-    <version>1.3.0</version>
+    <version>1.3.1-SNAPSHOT</version>
   </parent>
 
   <artifactId>com.io7m.quixote.xml</artifactId>

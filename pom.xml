@@ -13,7 +13,7 @@
 
   <groupId>com.io7m.quixote</groupId>
   <artifactId>com.io7m.quixote</artifactId>
-  <version>1.3.0</version>
+  <version>1.3.1-SNAPSHOT</version>
 
   <packaging>pom</packaging>
   <name>com.io7m.quixote</name>
@@ -30,7 +30,7 @@
 
   <properties>
     <!-- Configuration. -->
-    <io7m.api.previousVersion>1.2.0</io7m.api.previousVersion>
+    <io7m.api.previousVersion>1.3.0</io7m.api.previousVersion>
     <io7m.java.targetJavaVersion>21</io7m.java.targetJavaVersion>
 
     <!-- io7m dependencies. -->
