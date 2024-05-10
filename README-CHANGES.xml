@@ -20,7 +20,7 @@
         <c:change date="2024-04-03T00:00:00+00:00" summary="Add OCI container support."/>
       </c:changes>
     </c:release>
-    <c:release date="2024-05-10T20:24:24+00:00" is-open="true" ticket-system="com.github.io7m.quixote" version="2.0.0">
+    <c:release date="2024-05-10T20:25:43+00:00" is-open="true" ticket-system="com.github.io7m.quixote" version="2.0.0">
       <c:changes>
         <c:change date="2024-05-10T00:00:00+00:00" summary="Update ch.qos.logback:logback-classic:1.5.3 → 1.5.6"/>
         <c:change date="2024-05-10T00:00:00+00:00" summary="Update org.slf4j:slf4j-api:2.0.12 → 2.0.13"/>
@@ -30,6 +30,7 @@
         <c:change date="2024-05-10T00:00:00+00:00" summary="Update com.io7m.anethum:com.io7m.anethum.api:1.1.0 → 1.1.1"/>
         <c:change date="2024-05-10T00:00:00+00:00" summary="Update com.io7m.anethum:com.io7m.anethum.slf4j:1.1.0 → 1.1.1"/>
         <c:change date="2024-05-10T00:00:00+00:00" summary="Update com.io7m.jlexing:com.io7m.jlexing.core:3.1.0 → 3.2.0"/>
+        <c:change compatible="false" date="2024-05-10T20:25:43+00:00" summary="Require JDK 21."/>
       </c:changes>
     </c:release>
   </c:releases>
