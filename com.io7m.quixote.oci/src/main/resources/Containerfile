@@ -8,7 +8,7 @@ COPY quixote /quixote
 LABEL "org.opencontainers.image.authors"="Mark Raynsford"
 LABEL "org.opencontainers.image.description"="Embedded test suite web server"
 LABEL "org.opencontainers.image.licenses"="ISC"
-LABEL "org.opencontainers.image.source"="https://www.github.com/io7m/quixote"
+LABEL "org.opencontainers.image.source"="https://www.github.com/io7m-com/quixote"
 LABEL "org.opencontainers.image.title"="Quixote"
 LABEL "org.opencontainers.image.url"="https://www.io7m.com/software/quixote"
 LABEL "org.opencontainers.image.version"="${project.version}"
