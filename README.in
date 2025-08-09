@@ -112,7 +112,7 @@ In other words:
 6. The host reads the resulting request log from the host directory and
    verifies that the correct requests were made for the test.
 
-![Virtual Network](net.png)
+![Virtual Network](src/site/resources/net.png "Virtual network diagram.")
 
 Given a configuration file conforming to the provided
 [schema](com.io7m.quixote.xml/src/main/resources/com/io7m/quixote/xml/configuration-1.xsd),
